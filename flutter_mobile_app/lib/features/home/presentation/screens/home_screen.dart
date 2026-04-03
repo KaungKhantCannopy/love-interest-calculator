@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/widgets/cosmic_background.dart';
 import '../../../../core/widgets/glass_panel.dart';
 import '../../../love_interest/presentation/screens/love_quiz_screen.dart';
-import '../../../saju/presentation/screens/saju_profile_screen.dart';
 import '../../../palm_reading/presentation/screens/palm_reading_screen.dart';
+import '../../../saju/presentation/screens/saju_profile_screen.dart';
 import '../../../tarot/presentation/screens/tarot_reading_screen.dart';
 import '../../../zodiac/presentation/screens/zodiac_compatibility_screen.dart';
 
@@ -65,15 +65,21 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       _FeatureCard(
-                        emoji: '🔮',
+                        emoji: 'Saju',
                         title: 'Saju Five Elements',
                         description:
-                            'Input full birth date, exact birth time, and birth city/country for your 사주 pillars and 오행 destiny energy.',
+                            'Input full birth date, exact birth time, and birth city/country for your four pillars and five-element destiny energy.',
                         accent: const Color(0xFF9F92FF),
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => const SajuProfileScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _FeatureCard(
                         emoji: 'Palm',
                         title: 'Palm Reading',
                         description:
@@ -92,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                         emoji: 'Tarot',
                         title: 'Tarot Reading',
                         description:
-                            'Draw six Major Arcana cards from the online deck and reveal a full Gemini reading.',
+                            'Choose six Major Arcana cards from the deck and reveal a full Gemini reading.',
                         accent: const Color(0xFFFFC56E),
                         onTap: () {
                           Navigator.of(context).push(
