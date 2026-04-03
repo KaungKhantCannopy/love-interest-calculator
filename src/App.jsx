@@ -1,14 +1,3 @@
-/**
- * ═══════════════════════════════════════════════════════════════
- *  App.jsx — Love Interest Analyzer
- * ═══════════════════════════════════════════════════════════════
- *
- *  Main orchestrator:
- *    1. Multi-step questionnaire
- *    2. Score calculation via the scoring engine
- *    3. Animated result reveal
- *    4. "Try Again" reset flow
- */
 import React, { useState, useCallback, useMemo } from 'react';
 import { STEPS } from './engine/scoringConstants';
 import { analyzeInterest } from './engine/scoringEngine';
@@ -20,7 +9,6 @@ import BackgroundParticles from './components/BackgroundParticles';
 import ZodiacChecker from './components/ZodiacChecker';
 import SajuProfileChecker from './components/SajuProfileChecker';
 
-// ─── App States ──────────────────────────────────────────────
 const VIEW_LANDING = 'landing';
 const VIEW_QUIZ = 'quiz';
 const VIEW_RESULT = 'result';
@@ -28,15 +16,10 @@ const VIEW_ZODIAC = 'zodiac';
 const VIEW_SAJU = 'saju';
 
 export default function App() {
-  // Current view: landing → quiz → result
   const [view, setView] = useState(VIEW_LANDING);
-
-  // Quiz state
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
-
-  // ─── Handlers ──────────────────────────────────────────────
 
   const handleStart = useCallback(() => {
     setView(VIEW_QUIZ);
@@ -57,7 +40,6 @@ export default function App() {
     setView(VIEW_SAJU);
   }, []);
 
-  // Check if all questions in the current step are answered
   const isStepComplete = useMemo(() => {
     if (view !== VIEW_QUIZ) return false;
     const step = STEPS[currentStep];
@@ -67,12 +49,12 @@ export default function App() {
   const handleNext = useCallback(() => {
     if (currentStep < STEPS.length - 1) {
       setCurrentStep((s) => s + 1);
-    } else {
-      // Last step — calculate results
-      const analysisResult = analyzeInterest(answers);
-      setResult(analysisResult);
-      setView(VIEW_RESULT);
+      return;
     }
+
+    const analysisResult = analyzeInterest(answers);
+    setResult(analysisResult);
+    setView(VIEW_RESULT);
   }, [currentStep, answers]);
 
   const handlePrev = useCallback(() => {
@@ -101,13 +83,10 @@ export default function App() {
     return 'w-full max-w-xl';
   }, [view]);
 
-  // ─── Render ────────────────────────────────────────────────
-
   return (
     <div className="relative min-h-screen flex flex-col">
       <BackgroundParticles />
 
-      {/* Header */}
       <header className="relative z-10 pt-8 pb-4 px-4 text-center">
         <h1
           className="text-2xl sm:text-3xl font-black tracking-tight"
@@ -117,7 +96,7 @@ export default function App() {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          💘 Love Interest Analyzer
+          Love Interest Analyzer
         </h1>
         {view !== VIEW_LANDING && (
           <p className="text-xs mt-1" style={{ color: '#6b7280' }}>
@@ -126,44 +105,60 @@ export default function App() {
         )}
       </header>
 
-      {/* Main Content */}
       <main className="relative z-10 flex-1 flex items-start justify-center px-4 pb-12">
         <div className={containerClass}>
-
-          {/* ── LANDING ─────────────────────────────────── */}
           {view === VIEW_LANDING && (
             <div className="text-center mt-12 sm:mt-20 animate-fade-in-up">
-              <div className="text-6xl mb-6 animate-float">💘</div>
+              <div className="text-6xl mb-6 animate-float">Love</div>
               <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#f1f3f9' }}>
-                Are they into you?
+                Choose your love reading
               </h2>
-              <p className="text-base sm:text-lg mb-2 max-w-md mx-auto" style={{ color: '#8b95b3' }}>
-                Turn confusing relationship signals into clear, actionable insights.
+              <p className="text-base sm:text-lg mb-2 max-w-2xl mx-auto" style={{ color: '#8b95b3' }}>
+                Explore relationship signals, zodiac chemistry, or Saju destiny energy in one place.
               </p>
-              <p className="text-sm mb-10 max-w-sm mx-auto" style={{ color: '#5c6378' }}>
-                Answer 15 quick questions about their behavior and get your personalized analysis.
+              <p className="text-sm mb-10 max-w-2xl mx-auto" style={{ color: '#5c6378' }}>
+                Pick the reading that fits your question and get a more personal, guided view of your connection.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button className="btn-primary text-lg px-10 py-4" onClick={handleStart}>
-                  Start Analysis ✨
-                </button>
-                <button className="btn-secondary text-lg px-10 py-4" onClick={handleOpenZodiac}>
-                  Zodiac Vibes 🌙
-                </button>
-                <button className="btn-secondary text-lg px-10 py-4" onClick={handleOpenSaju}>
-                  Saju Energy 🔮
-                </button>
+              <div className="grid gap-4 sm:grid-cols-3 max-w-5xl mx-auto">
+                <div className="glass-card-light p-4 sm:p-5 text-left">
+                  <button className="btn-primary text-lg px-6 py-4 w-full" onClick={handleStart}>
+                    Start Analysis
+                  </button>
+                  <p className="text-sm mt-4 leading-6" style={{ color: '#8b95b3' }}>
+                    Answer 15 quick questions about their behavior and get a personalized analysis of attraction,
+                    mixed signals, red flags, and your best next move.
+                  </p>
+                </div>
+
+                <div className="glass-card-light p-4 sm:p-5 text-left">
+                  <button className="btn-secondary text-lg px-6 py-4 w-full" onClick={handleOpenZodiac}>
+                    Zodiac Vibes
+                  </button>
+                  <p className="text-sm mt-4 leading-6" style={{ color: '#8b95b3' }}>
+                    Compare two birth dates to discover romantic compatibility, natural chemistry, emotional style,
+                    and the strengths and friction points in your zodiac match.
+                  </p>
+                </div>
+
+                <div className="glass-card-light p-4 sm:p-5 text-left">
+                  <button className="btn-secondary text-lg px-6 py-4 w-full" onClick={handleOpenSaju}>
+                    Saju Energy
+                  </button>
+                  <p className="text-sm mt-4 leading-6" style={{ color: '#8b95b3' }}>
+                    Enter birth date, time, and place to explore Four Pillars energy, Five Elements balance, destiny
+                    patterns, and the deeper timing around your connection.
+                  </p>
+                </div>
               </div>
 
-              {/* Feature highlights */}
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-14 max-w-4xl mx-auto">
                 {[
-                  { icon: '📊', label: 'Interest Score' },
-                  { icon: '🚩', label: 'Red Flags' },
-                  { icon: '💡', label: 'Next Move' },
-                  { icon: '♈', label: 'Zodiac Traits' },
-                  { icon: '오행', label: 'Saju Energy' },
+                  { icon: 'Score', label: 'Interest Score' },
+                  { icon: 'Flags', label: 'Red Flags' },
+                  { icon: 'Hints', label: 'Next Move' },
+                  { icon: 'Star', label: 'Zodiac Traits' },
+                  { icon: 'Saju', label: 'Saju Energy' },
                 ].map((f) => (
                   <div key={f.label} className="glass-card-light p-4 text-center">
                     <span className="text-2xl block mb-1">{f.icon}</span>
@@ -176,19 +171,15 @@ export default function App() {
             </div>
           )}
 
-          {/* ── QUIZ ────────────────────────────────────── */}
           {view === VIEW_QUIZ && (
             <div className="mt-4">
               <div className="flex justify-between items-center mb-4">
                 <button className="btn-secondary px-4 py-2 text-sm" onClick={handleReset}>
-                  ← Back to Home
+                  Back to Home
                 </button>
               </div>
-              <ProgressBar
-                currentStep={currentStep}
-                totalSteps={STEPS.length}
-                steps={STEPS}
-              />
+
+              <ProgressBar currentStep={currentStep} totalSteps={STEPS.length} steps={STEPS} />
 
               <div className="glass-card p-6 sm:p-8">
                 <FormStep
@@ -198,43 +189,38 @@ export default function App() {
                   onChange={handleAnswer}
                 />
 
-                {/* Navigation */}
-                <div className="flex justify-between items-center mt-8 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                <div
+                  className="flex justify-between items-center mt-8 pt-6"
+                  style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+                >
                   <button
                     className="btn-secondary px-6 py-3 text-sm"
                     onClick={handlePrev}
                     disabled={currentStep === 0}
                     style={{ opacity: currentStep === 0 ? 0.3 : 1 }}
                   >
-                    ← Back
+                    Back
                   </button>
-                  <button
-                    className="btn-primary px-8 py-3 text-sm"
-                    onClick={handleNext}
-                    disabled={!isStepComplete}
-                  >
-                    {currentStep === STEPS.length - 1 ? 'See Results 🎯' : 'Next →'}
+                  <button className="btn-primary px-8 py-3 text-sm" onClick={handleNext} disabled={!isStepComplete}>
+                    {currentStep === STEPS.length - 1 ? 'See Results' : 'Next'}
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ── RESULT ──────────────────────────────────── */}
           {view === VIEW_RESULT && result && (
             <div className="mt-4">
               <ResultView result={result} onReset={handleReset} />
             </div>
           )}
 
-          {/* ── ZODIAC ──────────────────────────────────── */}
           {view === VIEW_ZODIAC && (
             <div className="mt-4">
               <ZodiacChecker onBack={handleReset} />
             </div>
           )}
 
-          {/* ── SAJU ────────────────────────────────────── */}
           {view === VIEW_SAJU && (
             <div className="mt-4">
               <SajuProfileChecker onBack={handleReset} />
@@ -243,9 +229,8 @@ export default function App() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="relative z-10 text-center py-6 text-xs" style={{ color: '#3d4663' }}>
-        Built with 💜 — For entertainment purposes only
+        Built with care - For entertainment purposes only
       </footer>
     </div>
   );
