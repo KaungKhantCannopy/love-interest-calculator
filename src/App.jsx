@@ -129,7 +129,6 @@ export default function App() {
       {/* Main Content */}
       <main className="relative z-10 flex-1 flex items-start justify-center px-4 pb-12">
         <div className={containerClass}>
-        <div className={`w-full ${view === VIEW_ZODIAC ? 'max-w-5xl' : 'max-w-xl'}`}>
 
           {/* ── LANDING ─────────────────────────────────── */}
           {view === VIEW_LANDING && (

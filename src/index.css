@@ -1115,6 +1115,9 @@ body {
 @media (max-width: 768px) {
   .saju-form-grid {
     grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .zodiac-compat-card {
     padding: 16px;
